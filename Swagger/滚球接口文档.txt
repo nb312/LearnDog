@@ -1,0 +1,471 @@
+swagger: '2.0'
+info:
+  title: 滚球官方接口文档
+  description: '[滚球官网](http://www.gunqiu.com/) [开发者主页](https://github.com/nb312) [Swagger官网](http://swagger.io) [学习文档](http://swagger.io/docs/specification/what-is-swagger/) 滚球官网文档第一版本,创建时间2017.06.17.以当前上线版本基础，如果接口有变更,请更新接口的版本  '
+  version: 1.0.0
+host: mobile.gunqiu.com
+basePath: /
+schemes:
+  - https
+paths:
+  /interface/notice:
+    get:
+      summary: 获取通知个数
+      description: '在首页中获取,获取完成更新UI'
+      tags:
+        - 主页
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: query
+          name: flag
+          type: string
+          required: true
+          description: 默认为1
+          default: '1'
+        - in: query
+          name: visit
+          type: string
+          description: 默认为1
+          required: false
+          default: '1'
+        - in: query
+          name: platform
+          type: string
+          description: 'Android：0; Ios:1'
+          default: '0'
+        - in: query
+          name: userId
+          type: string
+          description: 用户id
+          required: true
+        - in: query
+          name: cnickid
+          type: string
+          description: 同userId
+      responses:
+        '200':
+          description: 处理成功
+  /interface/user/info:
+    get:
+      summary: 获取用户信息
+      description: '在首页获取用户信息,进行更新'
+      tags:
+        - 主页
+        - 用户主页
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: query
+          name: visit
+          type: string
+          description: 默认为1
+          default: '1'
+        - in: query
+          name: platform
+          type: string
+          description: 'Android：0; Ios:1'
+          default: '0'
+        - in: query
+          name: userId
+          type: string
+          description: 用户id
+          required: true
+        - in: query
+          name: cnickid
+          type: string
+          description: 同userId
+      responses:
+        '200':
+          description: 处理成功
+          schema:
+            $ref: '#/definitions/UserInfo'
+  /interface/focus/add:
+    post:
+      summary: 关注
+      description: 关注人
+      operationId: "add"
+      tags:
+        - 用户主页
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: 添加关注
+          required: true
+          schema:
+            $ref: "#/definitions/AddFocus"
+      responses:
+        200:
+          description: 处理成功
+  /interface/focus/remove:
+    post:
+      summary: 取消关注
+      description: 取消关注人
+      tags:
+        - 用户主页
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: remove
+          description: 取消关注
+          schema:
+            type: object
+            required:
+              - followerId
+              - leaderId
+            properties:
+              followerId:
+                type: string #31782
+              leaderId: 
+                type: string #416
+      responses:
+        200:
+          description: 处理成功
+  /interface/focus/list:
+    get:
+      summary: 用户关注列表
+      description: 用户关注列表 用户主页中的关注模块
+      tags:
+        - 用户主页
+      parameters:
+        - in: query
+          name: targetId
+          type: string
+          description:  该用户的id 测试用416
+          default: 416
+          required: true
+      responses:
+        200:
+          description: 处理成功
+  /interface/follower/list:
+    get:
+      summary: 粉丝列表
+      description: 用户粉丝列表 用户主页中的粉丝模块
+      tags:
+        - 用户主页
+      parameters:
+        - in: query
+          name: targetId
+          type: string
+          description:  该用户的id 测试用416
+          default: 416
+          required: true
+      responses:
+        200:
+          description: 处理成功
+  /interface/ucenter/usercatestatis:
+    get:
+      summary: 用户统计
+      description: 用户统计,用户主页中只用了一部分数据
+      tags:
+        - 用户主页
+        - 用户统计
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: type
+          type: string
+          default: "0"
+          description: 类型：从别人的主页进去,我的统计里面进去都是0
+        - in: query
+          name: userId
+          type: string
+          required: true
+          description: 用户id 可以用416测试
+      responses:
+        200:
+          description: 处理成功
+  /interface/recommend/listUser:
+    get:
+      summary: 最新推荐
+      description: 最新推荐 用户主页中的推荐栏 
+      tags:
+        - 用户主页
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: limitStart
+          type: string
+          description: 分页开始
+          default: "0"
+        - in: query
+          name: limitNum
+          type: string
+          description: 每页个数
+          default: "20"
+        - in: query
+          name: oddstype
+          type: string
+          description: 什么类型
+          default: 0
+        - in: query
+          name: userId
+          type: string
+          description: 用户id 测试用416
+          default: 416
+          required: true
+      responses:
+        200:
+          description: OK
+  /interface/newindex:
+    get:
+      summary: 主页的全部数据
+      description: 主页的全部数据
+      produces: 
+        - application/json
+      tags:
+        - 主页
+      responses:
+        200:
+          description: 处理成功
+  /interface/recommend/show:
+    get:
+      summary: 推荐详情
+      description: 推荐详情 主页跳转界面
+      tags:
+        - 推荐详情
+      parameters:
+        - in: query
+          name: newsId
+          type: string
+          description: 详情id 可以用121220测试看看 当这个经常改变
+          default: 121220
+        - in: query
+          name: oddstype
+          type: string
+          description: 这是啥，默认为0
+          default: 0
+      responses:
+        200:
+          description: 处理成功
+  /interface/comment/add:
+    get:
+      summary: 添加评论
+      description: 发送评论 
+      consumes:
+        - application/json
+      tags:
+        - 推荐详情
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/CommentAdd"
+      responses:
+        200:
+          description: OK
+  /interface/like/add:
+    post:
+      summary: 赞/踩的接口
+      description: 赞/踩的接口
+      tags:
+        - 推荐详情
+      consumes: 
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/LikeAdd"
+      responses:
+        200:
+          description: 处理成功
+  /interface/bifen/focus:
+    get:
+      summary: 关注赛事列表
+      description:  关注赛事列表
+      tags:
+        - 比分
+      parameters:
+        - in: query
+          name: ids
+          type: string
+          description: 比赛id集 格式如：1368240,1351249,1351250,1351251,1351252
+          required: true
+      responses:
+        200:
+          description: 处理成功
+  /jsbf/v1.1/all/live.json:
+    get:
+      summary: 及时-全部比分
+      description: "及时-全部比分，数据有点多，直接跑链接[及时比分测试](http://mobile.gunqiu.com/jsbf/v1.1/all/live.json)"
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: visit
+          type: string
+          default: 1
+          description: 默认参数，默认值为1
+      tags:
+        - 比分
+      responses:
+        200:
+          description: 处理成功
+    
+  /interface/ranking/query:
+    get:
+      summary: 专家榜（近7天，总榜），连红榜，人气榜，明灯榜
+      description: 专家榜（近7天，总榜），连红榜，人气榜，明灯榜 主要以ranktype参数区分
+      tags:
+        - 各种榜
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: visit
+          type: string
+          default: "1"
+          description: 每个接口都有的
+        - in: query
+          name: type 
+          type: string
+          default: "1"
+          required: true
+          description: 类型：1=近7天 ，3=总榜,连红榜，datestr=-1
+        - in: query
+          name: datestr
+          type: string
+          description: 日期:type=1时 datestr时间格式：2017-06-28 ;当type=3 时datestr=-1
+          required: true
+        - in: query 
+          name: ranktype
+          type: string
+          description: ranktype(业务类型1-专家榜，2-人气榜 3-连红榜 4-明灯榜）
+          default: "1"
+          required: true
+        - in: query
+          name: play
+          type: string
+          description: (玩法0-全部[连红榜，人气榜，明灯榜] 1-欧赔 2-亚盘 3-大小球),专家榜不需要参数
+        - in: query
+          name: sclassid
+          type: string
+          description: (赛事id,-1表示所有赛事) 专家榜不需要
+      responses:
+        200:
+          description: 处理成功
+  /interface/rankmobile/stage.do:
+    get:
+      summary: 周榜和月榜
+      description: 专家榜里面的
+      tags:
+        - 各种榜
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: visit
+          type: string
+          default: "1"
+          description: 每个接口都有的
+        - in: query
+          name: type
+          type: string
+          required: true 
+          description: 类型:2=月榜，1=周榜
+          default: 2
+      responses:
+        200:
+          description: OK-处理成功
+  /interface/news/v1.2/infolist:
+    get:
+      sumary: 情报接口
+      description: 主页中：情报接口
+      produces: 
+        - application/json
+      tags:
+        - 情报
+      parameters:
+        - in: query
+          name: limitStart
+          type: string
+          default: "0"
+          description: 起始数
+        - in: query
+          name: limitNum
+          type: string
+          default: "20"
+          description: 一页个数
+      responses:
+        200:
+          description: 处理成功
+definitions:
+  UserInfo:
+    type: object
+    properties:
+      id:
+        type: string
+        description: 用户id
+  AddFocus: 
+    type: object
+    description: 添加关注
+    properties:
+      followerId:
+        type: string
+        example: 31782
+      leaderId:
+        type: string
+        example: 416
+      platform:
+        type: string
+        example: "0"
+  CommentAdd:
+    type: object
+    description: 添加评论
+    properties:
+      newsId:
+        type: string
+        example: 121220
+      type:
+        type: string
+        example: 2
+        description: 默认为2
+      content:
+        type: string
+        example: "我非常喜欢这个"
+        description: ""
+  LikeAdd:
+    type: object
+    description: 赞/或踩
+    properties:
+      type:
+        type: string
+        example: 1
+        description: 默认值为1
+      lclass:
+        type: string
+        description: 1：赞成，2：反对
+        example: 1
+      targetId:
+        type: string
+        description: 目标id
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
