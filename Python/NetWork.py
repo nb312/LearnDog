@@ -49,12 +49,14 @@ a = {
 service_default = """package  %s;
 
 import com.nb.libcommon.network.mvp.BaseResponseItem;
-
+import java.util.List;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
+//引包
+%s
 
 /**
  * Created by NieBin on 2018/1/8.
@@ -94,6 +96,7 @@ public class %s {\n
 view_inter_default="""package %s;
 
 import com.nb.libcommon.network.mvp.inter.BaseViewInter;
+import java.util.List;
 
 %s
 
@@ -112,7 +115,7 @@ model_inter_default="""package %s;
 import com.nb.libcommon.network.mvp.BaseResponseItem;
 import com.nb.libcommon.network.mvp.BaseSubscriberImpl;
 import com.nb.libcommon.network.mvp.inter.BaseModelInter;
-
+import java.util.List;
 import rx.Subscription;
 %s
 
@@ -133,7 +136,7 @@ model_default="""package %s;
 import com.nb.libcommon.network.mvp.BaseModelImpl;
 import com.nb.libcommon.network.mvp.BaseResponseItem;
 import com.nb.libcommon.network.mvp.BaseSubscriberImpl;
-
+import java.util.List;
 %s
 
 import rx.Subscription;
@@ -151,7 +154,7 @@ public class %s extends BaseModelImpl implements %s {
 presenter_inter_default="""package %s.presenter.inter;
 
 import com.nb.libcommon.network.mvp.inter.BasePresenterInter;
-
+import java.util.List;
 %s
 
 /**
@@ -168,7 +171,7 @@ presenter_default="""package %s.presenter;
 
 import com.nb.libcommon.network.mvp.BasePresenterImpl;
 import coin.otc.com.network.OTCResponseSubscriber;
-
+import java.util.List;
 %s
 
 /**
@@ -210,17 +213,24 @@ INTER = "inter"
 
 def create_service(package, inter_json):
     iService = service_suffix % (getUpperFirst(inter_json["controller"])) # 生成类名
-    package_str = package + "." + BaseFile + "." + SERVICE_PATH.lower()  # 生成包名
+    package_str = package + "." + SERVICE_PATH.lower()  # 生成包名
     file_body=""
+    item_imp=""
     for fuc in inter_json["func"]:
         file_body+= createServiceFunc(fuc) + "\n\n"
-    content= service_default % (package_str, inter_json["v1"], inter_json["desc"], iService, file_body)
+        last_path=getLastMethod(fuc["path"])
+        if(fuc["hasItem"]):
+            item_imp+="\nimport %s.%s;"%(package+".controller."+str(inter_json["controller"]).lower()+".item",
+                                    item_suffix%(getUpperFirst(last_path)))
+
+    content= service_default % (package_str,item_imp, inter_json["v1"], inter_json["desc"], iService, file_body)
     iServiceFile = open(getFile(SERVICE_PATH.lower(),getJavaFile(iService)), "w+",encoding='utf-8')
     try:
         iServiceFile.write(content)
         iServiceFile.close()
     except IOError:
         print()
+
 
 
 def createServiceFunc(func_json):
@@ -275,7 +285,7 @@ def createItem(package,func_json,controller_name):
     """创建网返回的item"""
     func =getLastMethod(func_json["path"])
     name=item_suffix%(getUpperFirst(func))
-    itemClassContent=item_head_default%(package+"."+CONTROLLER_PATH.lower()+"."+controller_name+".item",func_json["desc"],name)
+    itemClassContent=item_head_default%(package+"."+CONTROLLER_PATH.lower()+"."+str(controller_name).lower()+".item",func_json["desc"],name)
     itemFile = open(getFile(CONTROLLER_PATH.lower()+"\\"+str(controller_name).lower()+"\\item",name+".java"),"w+",encoding="utf-8")
     itemFile.write(itemClassContent)
 
@@ -284,7 +294,7 @@ def createParam(package,func_json,controller_name):
     func =getLastMethod(func_json["path"])  # 获取最后一个方法
     name = param_suffix%(getUpperFirst(func)) #类名
     desc = func_json["desc"] # 描述
-    package+="."+CONTROLLER_PATH.lower()+"."+controller_name+".param" # 包名
+    package+="."+CONTROLLER_PATH.lower()+"."+str(controller_name).lower()+".param" # 包名
     body = ""
     for param in func_json["params"]:
         anno ="""
@@ -308,19 +318,19 @@ def createParam(package,func_json,controller_name):
 def getGetMethodStr(type,method,param):
     """获取get方法对的字符串"""
     if(type is "boolean"):
-        return "\npublic %s is%s(){\n return this.%s\n}\n"%(type,method,param)
+        return "\npublic %s is%s(){\n return this.%s;\n}\n"%(type,method,param)
     else:
-        return "\npublic %s get%s(){\n return this.%s\n}\n"%(type,method,param)
+        return "\npublic %s get%s(){\n return this.%s;\n}\n"%(type,method,param)
 def getSetMethonString(method,type,param):
     """获取set方法的字符串"""
-    return "\npublic void set%s(%s %s){\nthis.%s = %s\n}\n"%(method,type,param,param,param)
+    return "\npublic void set%s(%s %s){\nthis.%s = %s;\n}\n"%(method,type,param,param,param)
 def createItems(package,inter_json):
     """创建 item 和 param"""
     funcs=inter_json["func"] #获取方法列表
     for func in funcs:
         if(func["hasItem"] is True): #
            createItem(package,func,inter_json["controller"])
-        if(len(str(func["params"]))>0):
+        if(len(func["params"])>0):
             createParam(package,func,inter_json["controller"])
 def createViewInters(package,inter_json):
     for func in inter_json["func"]:
@@ -331,25 +341,28 @@ def createViewInter(package,controller,func_json):
     body=""
     imp_item=""
     imp_param=""
+    param=""
+    lastPath=getLastMethod(func_json["path"])
     if(len(func_json["params"])>0):
-        lastPath=getLastMethod(func_json["path"])
         param = param_suffix % (getUpperFirst(lastPath))
-        imp_param=param
         body+="\n%s get%s();\n"%(param,param)
-        item="String"
-        if(func_json["hasItem"]):
-             item= item_suffix % (param)
-             imp_item=item
-        if(func_json["isList"]):
-            item="List<%s>"%(item)
-        success="void %s;\n"%(success_suffix % (getUpperFirst(lastPath), item))
-        body+=success
-    controller_pak="%s.controller.%s"%(package,str(controller).lower())
+    item="String"
+    if(func_json["hasItem"]):
+        item= item_suffix % (getUpperFirst(lastPath))
 
-    if(imp_param!=""):
-        imp_param = "import %s.param.%s;\n"%(controller_pak,imp_param)
-    if(imp_item!=""):
-        imp_item ="import %s.item.%s;\n"%(controller_pak,imp_item)
+    controller_pak="%s.controller.%s"%(package,str(controller).lower())
+    if (param != ""):
+        imp_param = "import %s.param.%s;\n"%(controller_pak, param)
+    if (item != "" and func_json["hasItem"]):
+        imp_item = "import %s.item.%s;\n"%(controller_pak, item)
+
+    if(func_json["isList"]):
+        item="List<%s>"%(item)
+    success="void %s;\n"%(success_suffix%(getUpperFirst(lastPath), item))
+    body+=success
+
+
+
 
     file_content=view_inter_default%(controller_pak+".view",imp_item+imp_param,func_json["desc"],viewinter_suffix%(getUpperFirst(lastPath)),body)
     view_inter_file=open(getFile("%s\\%s\\view"%(CONTROLLER_PATH.lower(),controller),
@@ -398,7 +411,7 @@ Subscription %s(%s BaseSubscriberImpl<BaseResponseItem<%s>> subscriber);
         anno +="*@return %s" % (func_json["desc"])
     item_str="String"
     if(func_json["hasItem"]):
-        package+="."+CONTROLLER_PATH.lower()+"."+controller+".item"
+        package+="."+CONTROLLER_PATH.lower()+"."+str(controller).lower()+".item"
         items_import_str+="import %s.%s;\n"%(package,item_suffix%(func_name))
         item_str=item_suffix%(func_name)
     if(func_json["isList"]):
@@ -422,7 +435,7 @@ def createModel(package,inter_json):
     for func_json in inter_json["func"]:
         if(func_json["hasItem"]):
             last_path=getLastMethod(func_json["path"])
-            import_str+="\nimport %s.%s"%(package+".controller."+controller_str+".item",
+            import_str+="\nimport %s.%s;"%(package+".controller."+str(controller_str).lower()+".item",
                                           item_suffix%(getUpperFirst(last_path))
                                                        )
         body_str+= createModelFunc(package,func_json,controller_str,inter_json["v1"])+"\n"
@@ -490,7 +503,7 @@ def createPresenterInter(package,inter_json):
     file_name=getUpperFirst(inter_json["controller"])
     for func_json in inter_json["func"]:
         last_path=getLastMethod(func_json["path"])
-        import_str+="\nimport %s.%s;"%(package_str+".controller"+"."+inter_json["controller"]+".view",
+        import_str+="\nimport %s.%s;"%(package_str+".controller"+"."+str(inter_json["controller"]).lower()+".view",
                                        viewinter_suffix%(getUpperFirst(last_path)))
         body_str+=body_func%(func_json["desc"],last_path,viewinter_suffix%(getUpperFirst(last_path)))
     file_content=presenter_inter_default%(package_str,import_str,desc_str,interface_str,body_str)
@@ -540,13 +553,15 @@ def createPresenterSubscriber(inter_json):
     """
     subscriber_all=""
     for func_json in inter_json["func"]:
-        desc_str=inter_json["desc"]
+        desc_str=func_json["desc"]
         last_path=getLastMethod(func_json["path"])
         func_name=getUpperFirst(last_path)
         class_str=subscriber_suffix%(func_name)
         item_str="String"
         if(func_json["hasItem"]):
             item_str=item_suffix%(func_name)
+        if(func_json["isList"]):
+            item_str="List<%s>"%(item_str)
         view_str=viewinter_suffix%(func_name)
         success_str="on%sSuccess"%(func_name)
         subscriber_all+=sub_str%(desc_str,
@@ -576,11 +591,13 @@ def createPresenterFunc(inter_json):
         view_str=viewinter_suffix%(getUpperFirst(last_path))
         param_str= param_suffix%(getUpperFirst(last_path))
         params_str=""
+        param_get_str=""
         if(len(func_json["params"])!=0):
             for param in func_json["params"]:
                 params_str+="param.get%s(),"%(getUpperFirst(param[0]))
+            param_get_str="%s param = viewInter.get%s();"%(param_str,param_str)
         sub_str=subscriber_suffix%(getUpperFirst(func_name))
-        param_get_str="%s param = viewInter.get%s();"%(param_str,param_str)
+
         methods_str+=method_str%(func_name,view_str,param_get_str,func_name,params_str,sub_str)
     return methods_str
 def createPresenterImport(package,inter_json):
@@ -593,7 +610,7 @@ def createPresenterImport(package,inter_json):
     item_imp=""
     for func in inter_json["func"]:
         last_path = getLastMethod(func["path"])
-        controller_base_pack = package+"."+CONTROLLER_PATH.lower()+"."+controller_str
+        controller_base_pack = package+"."+CONTROLLER_PATH.lower()+"."+str(controller_str).lower()
         view_import+="\nimport %s.%s;"%(controller_base_pack+".view",
                                          viewinter_suffix%(getUpperFirst(last_path)))
         if(len(func["params"])>0):
@@ -703,7 +720,8 @@ def wirteSingleFile(file_name):
 def writeAllFile():
     """"读取配置文件并生成接口文件"""
     createFileFolder()
-    file_paths= getFilePaths(os.getcwd() + "\\inter_jsons")
+    # file_paths= getFilePaths(os.getcwd() + "\\inter_jsons")
+    file_paths= getFilePaths(os.getcwd() + "\\test_json")
     for file  in file_paths:
         wirteSingleFile(file)
 
