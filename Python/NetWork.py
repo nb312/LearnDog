@@ -317,7 +317,7 @@ def createParam(package,func_json,controller_name):
 
 def getGetMethodStr(type,method,param):
     """获取get方法对的字符串"""
-    if(type is "boolean"):
+    if(type == "boolean"):
         return "\npublic %s is%s(){\n return this.%s;\n}\n"%(type,method,param)
     else:
         return "\npublic %s get%s(){\n return this.%s;\n}\n"%(type,method,param)
@@ -594,7 +594,10 @@ def createPresenterFunc(inter_json):
         param_get_str=""
         if(len(func_json["params"])!=0):
             for param in func_json["params"]:
-                params_str+="param.get%s(),"%(getUpperFirst(param[0]))
+                if param[1]=="boolean":
+                    params_str += "param.is%s()," % (getUpperFirst(param[0]))
+                else:
+                    params_str+="param.get%s(),"%(getUpperFirst(param[0]))
             param_get_str="%s param = viewInter.get%s();"%(param_str,param_str)
         sub_str=subscriber_suffix%(getUpperFirst(func_name))
 
@@ -637,8 +640,13 @@ def getJavaFile(file_name):
 def getLastMethod(_path):
     """获取路径中的最后一个参数"""
     p_s=str(_path).split("/")
-    if(len(p_s)>1):
-        _path=p_s[len(p_s)-1]
+    l =len(p_s)
+    if l >=2:
+        if len(p_s[l-1]) <5:
+          _path=p_s[l-2]+getUpperFirst(p_s[l-1])
+        else:
+            _path = p_s[l-1]
+
     _ps=str(_path).split("-")
     _p =""
     if(len(_ps)>1):
@@ -720,8 +728,8 @@ def wirteSingleFile(file_name):
 def writeAllFile():
     """"读取配置文件并生成接口文件"""
     createFileFolder()
-    # file_paths= getFilePaths(os.getcwd() + "\\inter_jsons")
-    file_paths= getFilePaths(os.getcwd() + "\\test_json")
+    file_paths= getFilePaths(os.getcwd() + "\\inter_jsons")
+    # file_paths= getFilePaths(os.getcwd() + "\\test_json")
     for file  in file_paths:
         wirteSingleFile(file)
 
