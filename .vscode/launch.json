@@ -1,0 +1,53 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Python",
+            "type": "python",
+            "request": "launch",
+            "stopOnEntry": true,
+            "pythonPath": "${config:python.pythonPath}",
+            "program": "${file}",
+            "cwd": "python",
+            "console": "integratedTerminal",
+            "env": {},
+            "envFile": "${workspaceFolder}/.env",
+            "debugOptions": []
+        },
+        {
+            "name": "Launch",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "remotePath": "",
+            "port": 2345,
+            "host": "127.0.0.1",
+            "program": "${workspaceRoot}",
+            "env": {
+            //"GOPATH":"C:\\DevelopTools\\Golang\\bin"
+            },
+            "args": [],
+            "showLog": true
+        },
+        {
+            "name": "Golang",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "remotePath": "",
+            "port": 2345,   
+            "host": "127.0.0.1",
+            "program": "${workspaceRoot}\\Go\\Web\\ProChat\\src\\Home.go",
+            "env": {
+            "GOPATH":"C:\\DevelopTools\\Golang;${workspaceRoot}\\Go\\Web\\ProChat"
+            
+            },
+            "args": [],
+            "showLog": true
+        }
+    ]
+}
