@@ -170,7 +170,7 @@ public interface %s extends BasePresenterInter {
 presenter_default="""package %s.presenter;
 
 import com.nb.libcommon.network.mvp.BasePresenterImpl;
-import coin.otc.com.network.OTCResponseSubscriber;
+import %s.network.OTCResponseSubscriber;
 import java.util.List;
 %s
 
@@ -520,6 +520,7 @@ def createPresenter(package,inter_json):
     func_str=createPresenterFunc(inter_json)
     sub_str=createPresenterSubscriber(inter_json)
     file_content =presenter_default%(package_str,
+                                     PKG,
                                      import_str,
                                      desc_str,
                                      class_str,
@@ -725,15 +726,26 @@ def wirteSingleFile(file_name):
         createPresenterInter(base_package, inter_json)
         createPresenter(base_package, inter_json)
 
-def writeAllFile():
+def writeAllFile(version):
     """"读取配置文件并生成接口文件"""
+    json_fodler= "\\inter_jsons"
+    if version == 1 :
+        BaseFile = "network"
+    elif version == 2 :
+        BaseFile = "network"
+        json_fodler = "\\icoin66_jsons"
+        global PKG
+        PKG = 'com.haoyong.szzc'
     createFileFolder()
-    file_paths= getFilePaths(os.getcwd() + "\\inter_jsons")
+    file_paths= getFilePaths(os.getcwd() +json_fodler)
     # file_paths= getFilePaths(os.getcwd() + "\\test_json")
     for file  in file_paths:
         wirteSingleFile(file)
-
-writeAllFile()
+"""
+1:OTC
+2:ICOIN66 
+"""
+writeAllFile(2)
 
 
 
