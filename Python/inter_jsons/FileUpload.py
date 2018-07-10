@@ -72,7 +72,7 @@
             "isList":False,
             "params": [
                 ["file", "String", "file文件url"],
-                ["category", "int", "类型：9工单文件"],
+                ["group", "int", "类型：9工单文件"],
             ]
         }
     ]

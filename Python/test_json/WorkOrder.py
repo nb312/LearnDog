@@ -24,7 +24,7 @@
             "hasItem":False,
             "isList":False,
             "params": [
-                ["category", "int", "工单类型:0举报,1反馈,2问题,3咨询,99其它"],
+                ["group", "int", "工单类型:0举报,1反馈,2问题,3咨询,99其它"],
                 ["content", "String", "工单内容"],
                 ["associateNo", "String", "关联的工单号"],
                 ["uploadFileArr", "String[]", "附件数组"]

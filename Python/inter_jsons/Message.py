@@ -38,7 +38,7 @@
             "params": [
                 ["offset", "long", "当前页起始行"],
                 ["limit", "long", "每页显示的记录条数"],
-                ["category", "int", "消息类型:0交易,1客服,2系统,3评价,4聊天,不传则查全部"]
+                ["group", "int", "消息类型:0交易,1客服,2系统,3评价,4聊天,不传则查全部"]
 
             ]
         }
@@ -68,12 +68,12 @@
         # 接口6
         {
             "method": "GET",
-            "path": "message/unRead-num-category",
+            "path": "message/unRead-num-group",
             "desc": "根据消息类型查询未读消息数",
             "hasItem":False,
             "isList":False,
             "params": [
-                ["category", "int", "消息类型:0交易,1客服,2系统,3评价,4聊天"]
+                ["group", "int", "消息类型:0交易,1客服,2系统,3评价,4聊天"]
             ]
         }
         ,

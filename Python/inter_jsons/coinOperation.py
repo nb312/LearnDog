@@ -45,8 +45,8 @@
             "params": [
                 ["offset","long","当前页起始行"],
                 ["limit","long","每页显示的记录条数"],
-                ["category","int","类型：0全部，1网络转入转出，2交易买入卖出"],
-                ["operationType","int","操作类型：category=2时，可选值:0买，1卖；category=1时，可选值:1充，2提"],
+                ["group","int","类型：0全部，1网络转入转出，2交易买入卖出"],
+                ["operationType","int","操作类型：group=2时，可选值:0买，1卖；group=1时，可选值:1充，2提"],
                 ["coinId","long","币种ID"]
             ]
         }
