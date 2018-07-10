@@ -1,7 +1,5 @@
 #!user/bin/python37
 
-import os
-
 ROOT_PATH = "./nbhttp/"  # this is root path for  create your own files.
 BASE_PATH = ROOT_PATH + "base/"
 SERVICE_PATH = ROOT_PATH + "service/"
@@ -21,7 +19,13 @@ def getFuncName(path=""):
     l_p = len(ps)
     if l_p > 1:
         for p in ps[l_p - 2:l_p]:
-            func_name += p[0].upper() + p[1:]
+            temp = ""
+            if "-" in p:
+                for letter in p.split("-"):
+                    temp += letter[0].upper() + letter[1:]
+            else:
+                temp = p
+            func_name += temp[0].upper() + temp[1:]
     else:
         func_name = ps
     return func_name
