@@ -1,4 +1,6 @@
 # usr/bin/python3
+
+import os
 from NBHttp.FileConstant import *
 
 _PACKAGE_ = "package %s.nbhttp.service \n" % BASE_PACKAGE_NAME
@@ -29,8 +31,14 @@ _FUNC_STR_ = """\n
     \n
 """
 
+_SERVICE_FILE_NAME_ = SERVICE_PATH + "/I%sService.kt"
+
 
 def buildServiceContent(fileName):
+    """
+    :param fileName: json config file of service
+    :return: service file name with the entire path, the  content of the service.
+    """
     with open(fileName, "r", encoding="utf-8") as file:
         content = file.read()
         inter_json = eval(content)
@@ -49,7 +57,7 @@ def buildServiceContent(fileName):
             params_in_func = ""
             body_str = "%sBody" % func_name
             if func["hasItem"]:
-                import_str += "import %s.controller.%s.%s\n" % (BASE_PACKAGE_NAME, group.lower(), body_str)
+                import_str += "import %s.group.%s.body.%s\n" % (BASE_PACKAGE_NAME, group.lower(), body_str)
                 params = list(func["params"])
                 params_in_func += "@Query(\"%s\") %s:%s" % (params[0][0], params[0][0], params[0][1])
                 for param in params[1:]:
@@ -61,7 +69,19 @@ def buildServiceContent(fileName):
             funcs_str += _FUNC_STR_ % (params_commit, method, path, func_name, params_in_func, body_str)
         _SERVICE_FIlE = _PACKAGE_ + _IMPORT_ % import_str + FILE_HEADER_ % desc_group + _SERVICE_CLASS_ % (
             group, funcs_str)
-        return _SERVICE_FIlE
+        return _SERVICE_FILE_NAME_ % group, _SERVICE_FIlE
 
 
-print(buildServiceContent("./json_config/Advertise.py"))
+def create_service_file(file_name):
+    """
+    :param file_name: service file name
+    :return: none
+    """
+    service_name, content = buildServiceContent(file_name)
+    if os.path.exists(SERVICE_PATH) is False:
+        os.mkdir(SERVICE_PATH)
+    with open(service_name, "w+", encoding="utf-8") as file:
+        file.write(content)
+
+
+create_service_file("./json_config/Advertise.py")

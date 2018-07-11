@@ -2,7 +2,7 @@
 
 
 from NBHttp.FileConstant import *
-import os;
+import os
 
 _PACKAGE_FILE_ = "package %s.group.%s.body" % (BASE_PACKAGE_NAME, "%s")
 
@@ -49,7 +49,7 @@ def createBodyFile(file_name):
     assert len(body_files) == len(body_contents)
     for i, body_name in enumerate(body_files):
         if os.path.exists(body_name) is False:
-            with open(body_name, "w+") as file:
+            with open(body_name, "w+", encoding="utf-8") as file:
                 file.write(body_contents[i])
 
 
