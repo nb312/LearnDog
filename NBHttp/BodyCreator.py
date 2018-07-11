@@ -4,7 +4,7 @@
 from NBHttp.FileConstant import *
 import os;
 
-_PACKAGE_FILE_ = "package %s.%s.body" % (BASE_PACKAGE_NAME, "%s")
+_PACKAGE_FILE_ = "package %s.group.%s.body" % (BASE_PACKAGE_NAME, "%s")
 
 _BODY_HEADER_ = FILE_HEADER_ % "This body need you to generate from json"
 
@@ -30,15 +30,14 @@ def buildBodyStr(fileName):
         group = str(inter_json["group"]).lower()
         body_path = _PATH_FILE_ % (GROUP_PATH, group)
         for func in inter_json["func"]:
-            eval()
             has_body = func["hasJsonBody"]
             if has_body:
                 ph = func["path"]
-                body_name = getFuncName(ph)
-                body_str = _PACKAGE_FILE_ + _BODY_HEADER_ + _CLASS_STR_ % body_name
+                body_name = getFuncName(ph) + "Body"
+                body_str = _PACKAGE_FILE_ % group + _BODY_HEADER_ + _CLASS_STR_ % body_name
                 all_body_strs.append(body_str)
                 all_body_files.append(body_path + "/%s.kt" % body_name)
-                return GROUP_PATH + "/" + group, body_path, all_body_files, all_body_strs
+        return GROUP_PATH + "/" + group, body_path, all_body_files, all_body_strs
 
 
 def createBodyFile(file_name):
@@ -48,7 +47,7 @@ def createBodyFile(file_name):
     if os.path.exists(body_path) is False:
         os.mkdir(body_path)
     assert len(body_files) == len(body_contents)
-    for i, body_name in body_files:
+    for i, body_name in enumerate(body_files):
         if os.path.exists(body_name) is False:
             with open(body_name, "w+") as file:
                 file.write(body_contents[i])

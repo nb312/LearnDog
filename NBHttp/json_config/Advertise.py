@@ -10,6 +10,7 @@
             "desc": "发布广告时，计算价格",
             "hasItem": True,
             "isList": False,
+            "hasJsonBody": True,
             "params": [
                 ["exchangeId", "long", "交易所id"],
                 ["coinId", "long", "币种id"],
@@ -25,6 +26,7 @@
             "desc": "关闭广告",
             "hasItem": False,
             "isList": False,
+            "hasJsonBody": True,
             "params": [
                 ["id", "long", "广告id"]
             ]
@@ -37,6 +39,7 @@
             "desc": "删除广告",
             "hasItem": False,
             "isList": False,
+            "hasJsonBody": True,
             "params": [
                 ["id", "long", "广告id"]
             ]
@@ -49,6 +52,7 @@
             "desc": "进入编辑页，获取广告信息",
             "hasItem": True,
             "isList": False,
+            "hasJsonBody": False,
             "params": [
                 ["id", "long", "广告id"]
             ]
@@ -61,6 +65,7 @@
             "desc": "我的广告列表：包含全部、进行中、已关闭，用参数type区分",
             "hasItem": True,
             "isList": False,
+            "hasJsonBody": True,
             "params": [
                 ["offset", "long", "当前页起始行"],
                 ["limit", "long", "每页显示的记录条数"],
@@ -111,6 +116,7 @@
             "desc": "开启广告",
             "hasItem": False,
             "isList": False,
+            "hasJsonBody": True,
             "params": [
                 ["id", "long", "广告id"]
             ]
@@ -123,6 +129,7 @@
             "desc": "广告设置 app没有用到 并且我update-vacation-status改为了update-vacation-status-test",
             "hasItem": False,
             "isList": False,
+            "hasJsonBody": False,
             "params": [
                 ["buyVacation", "boolean", "买家是否休假 默认true"],
                 ["sellVacation", "boolean", "卖家是否休假 默认false"]
@@ -136,6 +143,7 @@
             "desc": "广告设置",
             "hasItem": False,
             "isList": False,
+            "hasJsonBody": True,
             "params": [
                 ["vacation", "boolean", "是否休假 默认true"],
                 ["entrustType", "int", "交易类型"]
@@ -149,6 +157,7 @@
             "desc": "用户主页：发布的广告",
             "hasItem": True,
             "isList": False,
+            "hasJsonBody": True,
             "params": [
                 ["offset", "long", "当前页起始行"],
                 ["limit", "long", "每页显示的记录条数"],
