@@ -42,10 +42,10 @@ def buildParamStr(file_name):
             params_str = ""
             param_commit_str = ""
             if p_len > 0:
-                params_str += "var %s:%s" % (params[0][0], params[0][1])
+                params_str += "var %s:%s %s" % (params[0][0], params[0][1], __createDefaultValue___(params[0][1]))
                 param_commit_str += "*@param %s %s" % (params[0][0], params[0][2])
                 for p in params[1:]:
-                    params_str += ",\n    var %s:%s" % (p[0], p[1])
+                    params_str += ",\n    var %s:%s %s" % (p[0], p[1], __createDefaultValue___(p[1]))
                     param_commit_str += "\n *@param %s %s" % (p[0], p[2])
             commit_str = _PARAM_COMMIT_STR % param_commit_str
             file_content = _PACKAGE_FILE_ % group + \
@@ -57,6 +57,23 @@ def buildParamStr(file_name):
             file_contents.append(file_content)
             param_files.append(param_file)
         return GROUP_PATH + "/" + group.lower(), _PARAM_PATH_ % group, param_files, file_contents
+
+
+def __createDefaultValue___(type=""):
+    re_str = ""
+    if type == "Long":
+        re_str = "=0L"
+    elif type == "String":
+        re_str = "=\"\""
+    elif type == "Int":
+        re_str = "=0"
+    elif type == "Boolen":
+        re_str = "=false"
+    elif type == "Double":
+        re_str = "= 0.0"
+    else:
+        re_str = ""
+    return re_str
 
 
 def createParamFile(file_name):
