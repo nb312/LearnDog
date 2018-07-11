@@ -1,5 +1,5 @@
 #!python/bin
 
 
-lis = ["a", "c", "d"]
-print(lis[1: 3])
+_HH_ = "%sHHH%s" % "000"
+print(_HH_)

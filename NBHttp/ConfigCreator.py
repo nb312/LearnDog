@@ -30,6 +30,7 @@ def buildConfigStr(file_name):
         config_contents = []
         for func in inter_json["func"]:
             path = func["path"]
+            desc = func["desc"]
             func_name = getFuncName(path)
             param_import = _IMPORT_PARAM_ % (group, func_name)
             body_import = ""
@@ -43,7 +44,7 @@ def buildConfigStr(file_name):
                                        )
             config_content = _PACKAGE_NAME_ % group + \
                              param_import + body_import + \
-                             _CONFIG_HEADER_ + \
+                             FILE_HEADER_ % desc + \
                              class_str
             config_contents.append(config_content)
             config_file = _CONFIG_FILE_ % (group, func_name)

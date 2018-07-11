@@ -35,6 +35,7 @@ def buildParamStr(file_name):
         param_files = []
         for func in inter_json["func"]:
             path = func["path"]
+            desc = func["desc"]
             param_name = getFuncName(path)
             params = func["params"]
             p_len = len(params)
@@ -49,7 +50,7 @@ def buildParamStr(file_name):
             commit_str = _PARAM_COMMIT_STR % param_commit_str
             file_content = _PACKAGE_FILE_ % group + \
                            _IMPORT_FILE_ + \
-                           _FILE_HEADER_ + \
+                           FILE_HEADER_ % desc + \
                            commit_str + \
                            _CLASS_STR_ % (param_name, params_str)
             param_file = _PARAM_FILE_ % (group.lower(), param_name)

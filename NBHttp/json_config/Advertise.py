@@ -10,7 +10,7 @@
             "desc": "发布广告时，计算价格",
             "hasItem": True,
             "isList": False,
-            "hasJsonBody": True,
+            "hasJsonBody": False,
             "params": [
                 ["exchangeId", "long", "交易所id"],
                 ["coinId", "long", "币种id"],

@@ -32,9 +32,10 @@ def buildBodyStr(fileName):
         for func in inter_json["func"]:
             has_body = func["hasJsonBody"]
             if has_body:
+                desc = func["desc"]
                 ph = func["path"]
                 body_name = getFuncName(ph) + "Body"
-                body_str = _PACKAGE_FILE_ % group + _BODY_HEADER_ + _CLASS_STR_ % body_name
+                body_str = _PACKAGE_FILE_ % group + FILE_HEADER_ % desc + _CLASS_STR_ % body_name
                 all_body_strs.append(body_str)
                 all_body_files.append(body_path + "/%s.kt" % body_name)
         return GROUP_PATH + "/" + group, body_path, all_body_files, all_body_strs

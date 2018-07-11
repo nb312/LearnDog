@@ -10,7 +10,7 @@ CALLBACK_PATH = CONTROLLER_PATH + "callback"
 CONTROLLER_INTER = CONTROLLER_PATH + "inter"
 
 INTER_FOLDER_NAME = "inter"
-BASE_PACKAGE_NAME = "com.nb.base"
+BASE_PACKAGE_NAME = "com.nb.base.nbhttp"
 
 FILE_HEADER_ = """
 /**
@@ -39,3 +39,13 @@ def getFuncName(path=""):
     else:
         func_name = ps
     return func_name[0].upper() + func_name[1:]
+
+
+def getWithFirstLower(content=""):
+    return content[0].lower() + content[1:]
+
+
+def getWithFirstUpper(content=""):
+    return content[0].upper() + content[1:]
+
+
