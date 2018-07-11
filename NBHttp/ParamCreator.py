@@ -3,9 +3,9 @@
 from NBHttp.FileConstant import *
 import os
 
-_PACKAGE_FILE_ = "package %s.group.%s.param\n\n" % (BASE_PACKAGE_NAME, "%s")
+_PACKAGE_FILE_ = "package %s.group.%s.param\n" % (BASE_PACKAGE_NAME, "%s")
 
-_IMPORT_FILE_ = "import nbhttp.base.BaseHttpParam\n\n"
+_IMPORT_FILE_ = "import %s.base.BaseHttpParam\n" % BASE_PACKAGE_NAME
 
 _FILE_HEADER_ = FILE_HEADER_ % "this is created by python script. "
 
