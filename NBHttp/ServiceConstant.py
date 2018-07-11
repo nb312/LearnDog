@@ -56,13 +56,15 @@ def buildServiceContent(fileName):
             func_name = getFuncName(path)
             params_in_func = ""
             body_str = "%sBody" % func_name
-            if func["hasItem"]:
-                import_str += "import %s.group.%s.body.%s\n" % (BASE_PACKAGE_NAME, group.lower(), body_str)
-                params = list(func["params"])
+            params = list(func["params"])
+            param_len = len(params)
+            if param_len > 0:
                 params_in_func += "@Query(\"%s\") %s:%s" % (params[0][0], params[0][0], params[0][1])
                 for param in params[1:]:
                     params_commit += "*@param %s %s \n     " % (param[0], param[2])
                 params_in_func += ",     \n@Query(\"%s\") %s:%s" % (param[0], param[0], param[1])
+            if func["hasJsonBody"]:
+                import_str += "import %s.group.%s.body.%s\n" % (BASE_PACKAGE_NAME, group.lower(), body_str)
             else:
                 body_str = "String"
 
