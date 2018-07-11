@@ -62,13 +62,13 @@ def buildParamStr(file_name):
 def __createDefaultValue___(type=""):
     re_str = ""
     if type == "Long":
-        re_str = "=0L"
+        re_str = "= 0L"
     elif type == "String":
-        re_str = "=\"\""
+        re_str = "= \"\""
     elif type == "Int":
-        re_str = "=0"
+        re_str = "= 0"
     elif type == "Boolen":
-        re_str = "=false"
+        re_str = "= false"
     elif type == "Double":
         re_str = "= 0.0"
     else:
