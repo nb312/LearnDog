@@ -12,15 +12,6 @@ import retrofit2.http.POST
 %s
 \n
 """
-_FILE_HEADER_ = """
-/**
- * Created by NieBin on 2018-07-10
- * Github: https://github.com/nb312
- * Email: niebin312@gmail.com
- * %s 
- */
- \n
-"""
 
 _SERVICE_CLASS_ = """\n
 interface I%sService {\n
@@ -56,7 +47,7 @@ def buildServiceContent(fileName):
             path = func["path"]
             func_name = getFuncName(path)
             params_in_func = ""
-            body_str = "%sItem" % func_name
+            body_str = "%sBody" % func_name
             if func["hasItem"]:
                 import_str += "import %s.controller.%s.%s\n" % (BASE_PACKAGE_NAME, group.lower(), body_str)
                 params = list(func["params"])
@@ -68,7 +59,7 @@ def buildServiceContent(fileName):
                 body_str = "String"
 
             funcs_str += _FUNC_STR_ % (params_commit, method, path, func_name, params_in_func, body_str)
-        _SERVICE_FIlE = _PACKAGE_ + _IMPORT_ % import_str + _FILE_HEADER_ % desc_group + _SERVICE_CLASS_ % (
+        _SERVICE_FIlE = _PACKAGE_ + _IMPORT_ % import_str + FILE_HEADER_ % desc_group + _SERVICE_CLASS_ % (
             group, funcs_str)
         return _SERVICE_FIlE
 

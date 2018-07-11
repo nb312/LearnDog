@@ -77,6 +77,7 @@
             "desc": "发布广告",
             "hasItem": True,
             "isList": False,
+            "hasJsonBody": False,
             "params": [
                 ["id", "long", "编辑广告时,必填"],
                 ["entrustType", "int", "交易类型：0在线购买，1在线出售"],
