@@ -74,4 +74,3 @@ def createCallbackFile(file_name):
             file.write(callback_contents[index])
 
 
-createCallbackFile("./json_config/Advertise.py")

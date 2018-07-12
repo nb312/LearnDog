@@ -87,4 +87,3 @@ def createParamFile(file_name):
             file.write(param_contents[index])
 
 
-createParamFile("./json_config/Advertise.py")

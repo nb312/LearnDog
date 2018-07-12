@@ -41,7 +41,7 @@ def buildControllerStr(file_name):
             group), controll_file_content
 
 
-def createControllerFile(file_name):
+def createControllerInterfaceFile(file_name):
     controller_path, controller_file, file_content = buildControllerStr(file_name)
     if os.path.exists(controller_path) is False:
         os.mkdir(controller_path)
@@ -49,4 +49,3 @@ def createControllerFile(file_name):
         file.write(file_content)
 
 
-createControllerFile("./json_config/Advertise.py")

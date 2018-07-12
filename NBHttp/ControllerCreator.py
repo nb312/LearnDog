@@ -70,7 +70,7 @@ _FUNC_STR_ = """
     }
     \n
 """
-_CONTROLLER_FILE_ = CONTROLLER_PATH + "/I%sController"
+_CONTROLLER_FILE_ = CONTROLLER_PATH + "/I%sController.kt"
 
 
 def buildControllerStr(file_name):
@@ -108,7 +108,7 @@ def buildControllerStr(file_name):
         return contr_file, file_content
 
 
-def createContrFile(file_name):
+def createControllerFile(file_name):
     contr_file, contr_content = buildControllerStr(file_name)
     if os.path.exists(CONTROLLER_PATH) is False:
         os.mkdir(CONTROLLER_PATH)
@@ -116,4 +116,3 @@ def createContrFile(file_name):
         file.write(contr_content)
 
 
-createContrFile("./json_config/Advertise.py")

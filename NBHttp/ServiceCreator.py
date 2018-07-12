@@ -86,6 +86,3 @@ def create_service_file(file_name):
         os.mkdir(SERVICE_PATH)
     with open(service_name, "w+", encoding="utf-8") as file:
         file.write(content)
-
-
-create_service_file("./json_config/Advertise.py")

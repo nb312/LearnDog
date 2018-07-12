@@ -65,4 +65,3 @@ def creatConfigFile(file_name):
             file.write(config_contents[index])
 
 
-creatConfigFile("./json_config/Advertise.py")

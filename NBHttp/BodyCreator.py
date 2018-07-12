@@ -54,4 +54,3 @@ def createBodyFile(file_name):
                 file.write(body_contents[i])
 
 
-createBodyFile("./json_config/Advertise.py")
