@@ -31,6 +31,7 @@ def buildConfigStr(file_name):
         for func in inter_json["func"]:
             path = func["path"]
             desc = func["desc"]
+            is_list = func["isList"]
             func_name = getFuncName(path)
             param_import = _IMPORT_PARAM_ % (group, func_name)
             body_import = ""
@@ -38,6 +39,8 @@ def buildConfigStr(file_name):
             if func["hasJsonBody"]:
                 body_str = "%sBody" % func_name
                 body_import = _IMPORT_BODY_ % (group.lower(), func_name)
+            if is_list:
+                body_str = "MutableList<%s>" % body_str
             class_str = _CLASS_STR_ % (func_name,
                                        func_name[0].lower() + func_name[1:], func_name,
                                        func_name, body_str

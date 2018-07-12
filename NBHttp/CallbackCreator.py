@@ -37,6 +37,7 @@ def buildCallbackStr(file_name):
         for func in inter_json["func"]:
             func_name = getFuncName(func["path"])
             desc = func["desc"]
+            isList = bool(func["isList"])
             package = _PACKAGE_CALL_ % group
             imp_config = _IMPORT_CONFIG_ % (group, func_name)
             body_str = "String"
@@ -44,8 +45,11 @@ def buildCallbackStr(file_name):
             if func["hasJsonBody"]:
                 imp_body = _IMPORT_BODY_ % (group, func_name)
                 body_str = "%sBody" % func_name
+            if isList:
+                body_str = "MutableList<%s>" % body_str
             class_str = _CLASS_STR_ % (
-                func_name, getWithFirstLower(func_name), func_name, body_str, func_name, getWithFirstLower(func_name),
+                func_name, getWithFirstLower(func_name), func_name, body_str, func_name,
+                getWithFirstLower(func_name),
                 body_str,
                 func_name, func_name)
             callback_content = package + \

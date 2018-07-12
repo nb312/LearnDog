@@ -53,9 +53,11 @@ def buildServiceContent(fileName):
             params_commit = desc
             method = func["method"]
             path = func["path"]
+            is_list = func["isList"]
             func_name = getFuncName(path)
             params_in_func = ""
-            body_str = "%sBody" % func_name
+
+            body_str = "String"
             params = list(func["params"])
             param_len = len(params)
             if param_len > 0:
@@ -64,10 +66,10 @@ def buildServiceContent(fileName):
                     params_commit += "*@param %s %s \n     " % (param[0], param[2])
                 params_in_func += ",     \n@Query(\"%s\") %s:%s" % (param[0], param[0], param[1])
             if func["hasJsonBody"]:
+                body_str = "%sBody" % func_name
                 import_str += "import %s.group.%s.body.%s\n" % (BASE_PACKAGE_NAME, group.lower(), body_str)
-            else:
-                body_str = "String"
-
+            if is_list is True:
+                body_str = "MutableList<%s>" % body_str
             funcs_str += _FUNC_STR_ % (params_commit, method, path, func_name, params_in_func, body_str)
         _SERVICE_FIlE = _PACKAGE_ + _IMPORT_ % import_str + FILE_HEADER_ % desc_group + _SERVICE_CLASS_ % (
             group, funcs_str)
