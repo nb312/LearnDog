@@ -28,10 +28,10 @@ def getFuncName(path=""):
     func_name = ""
     l_p = len(ps)
     if l_p > 1:
-        for p in ps[l_p - 2:l_p]:
+        for index, p in enumerate(ps[l_p - 2:l_p]):
             temp = ""
             if "-" in p:
-                for letter in p.split("-"):
+                for letter in p.split("-")[-2:]:
                     temp += letter[0].upper() + letter[1:]
             else:
                 temp = p
@@ -47,5 +47,3 @@ def getWithFirstLower(content=""):
 
 def getWithFirstUpper(content=""):
     return content[0].upper() + content[1:]
-
-

@@ -17,7 +17,7 @@ _FUNC_STR = """
  /**
  * %s
  */
-  fun %s(i%sConfig:I%sConfig):Disposable\n
+  fun %s(i%sConfig:I%sConfig):Disposable?\n
 """
 
 _CONTROLLER_FILE_PATH_ = CONTROLLER_PATH + "/inter"

@@ -1,5 +1,5 @@
 #!python/bin
 
 
-_HH_ = "%sHHH%s" % "000"
-print(_HH_)
+x = "123"
+print(x[-5:])

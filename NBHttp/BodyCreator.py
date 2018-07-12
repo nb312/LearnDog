@@ -17,12 +17,12 @@ class %s {
 _PATH_FILE_ = "%s/%s/body"  # 1: GROUP_PATH 2: some group name.
 
 
-def buildBodyStr(fileName):
+def buildBodyStr(file_name):
     """
     :param fileName: this is the file name of http config json that write by users.
     :return:  group path, body path , all paths of body files,all contents of body files.
     """
-    with open(fileName, "r", encoding="utf-8") as file:
+    with open(file_name, "r", encoding="utf-8") as file:
         content = file.read()
         inter_json = eval(content)
         all_body_strs = []
