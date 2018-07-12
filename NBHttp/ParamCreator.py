@@ -9,7 +9,7 @@ _IMPORT_FILE_ = "import %s.base.BaseHttpParam\n" % BASE_PACKAGE_NAME
 
 _FILE_HEADER_ = FILE_HEADER_ % "this is created by python script. "
 
-_CLASS_STR_ = "data class %sParam(%s) : BaseHttpParam()"
+_CLASS_STR_ = "%s class %sParam(%s) : BaseHttpParam()"
 
 _PARAM_COMMIT_STR = """
 /**
@@ -40,23 +40,27 @@ def buildParamStr(file_name):
             params = func["params"]
             p_len = len(params)
             params_str = ""
-            param_commit_str = ""
+            param_commit_str = desc
+            data_str = ""
+
             if p_len > 0:
+                data_str = "data"
                 params_str += "var %s:%s %s" % (params[0][0], params[0][1], __createDefaultValue___(params[0][1]))
                 param_commit_str += "*@param %s %s" % (params[0][0], params[0][2])
                 for p in params[1:]:
                     params_str += ",\n    var %s:%s %s" % (p[0], p[1], __createDefaultValue___(p[1]))
                     param_commit_str += "\n *@param %s %s" % (p[0], p[2])
             commit_str = _PARAM_COMMIT_STR % param_commit_str
-            file_content = _PACKAGE_FILE_ % group + \
+
+            file_content = _PACKAGE_FILE_ % group.lower() + \
                            _IMPORT_FILE_ + \
                            FILE_HEADER_ % desc + \
                            commit_str + \
-                           _CLASS_STR_ % (param_name, params_str)
+                           _CLASS_STR_ % (data_str, param_name, params_str)
             param_file = _PARAM_FILE_ % (group.lower(), param_name)
             file_contents.append(file_content)
             param_files.append(param_file)
-        return GROUP_PATH + "/" + group.lower(), _PARAM_PATH_ % group, param_files, file_contents
+        return GROUP_PATH + "/" + group.lower(), _PARAM_PATH_ % group.lower(), param_files, file_contents
 
 
 def __createDefaultValue___(type=""):
@@ -85,5 +89,3 @@ def createParamFile(file_name):
     for index, param_file in enumerate(param_files):
         with open(param_file, "w+", encoding="utf-8") as file:
             file.write(param_contents[index])
-
-

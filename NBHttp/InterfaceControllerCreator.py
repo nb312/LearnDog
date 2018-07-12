@@ -27,13 +27,13 @@ def buildControllerStr(file_name):
     with open(file_name, "r", encoding="utf-8") as file:
         content = file.read()
         inter_json = eval(content)
-        group = str(inter_json["group"]).lower()
+        group = str(inter_json["group"])
         imp_str = ""
         funcs_str = ""
         for func in inter_json["func"]:
             desc = func["desc"]
             func_name = getFuncName(func["path"])
-            imp_str += "import %s.group.%s.I%sConfig\n" % (BASE_PACKAGE_NAME, group, func_name)
+            imp_str += "import %s.group.%s.I%sConfig\n" % (BASE_PACKAGE_NAME, group.lower(), func_name)
             funcs_str += _FUNC_STR % (desc, getWithFirstLower(func_name), func_name, func_name)
         interface_str = _INTERFACE_STR_ % (getWithFirstUpper(group), funcs_str)
         controll_file_content = _PACKAGE_IN_CONTROLLER_ + _IMPORT_CONTRS % imp_str + interface_str
@@ -47,5 +47,3 @@ def createControllerInterfaceFile(file_name):
         os.mkdir(controller_path)
     with open(controller_file, "w+", encoding="utf-8") as file:
         file.write(file_content)
-
-

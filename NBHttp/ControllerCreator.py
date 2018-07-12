@@ -64,7 +64,7 @@ _FUNC_STR_ = """
         }
         var serviceCreator = BaseServiceCreator(i%sConfig.%sParam)
         var service = serviceCreator.createService(I%sService::class.java)
-        var disposable = serviceCreator.onSubscribe(service.%s(i%sConfig.%sParam.time), %sConfigCallBack(i%sConfig))
+        var disposable = serviceCreator.onSubscribe(service.%s(%s), %sConfigCallBack(i%sConfig))
         addDisposable(disposable)
         return disposable
     }
@@ -92,15 +92,20 @@ def buildControllerStr(file_name):
         for func in inter_json["func"]:
             func_name = getFuncName(func["path"])
             desc = func["desc"]
-            imp_config += _IMP_CONFIG_ % (BASE_PACKAGE_NAME, group, func_name)
-            imp_callback += _IMP_CALLBACK_ % (BASE_PACKAGE_NAME, group, func_name)
+
+            param_str = ""
+            if len(func["params"]) > 0:
+                param_str += "\ni%sConfig.%sParam.%s" % (func_name, getWithFirstLower(func_name), func["params"][0][0])
+            for param in func["params"][1:]:
+                param_str += ",\ni%sConfig.%sParam.%s" % (func_name, getWithFirstLower(func_name), param[0])
+            imp_config += _IMP_CONFIG_ % (BASE_PACKAGE_NAME, group.lower(), func_name)
+            imp_callback += _IMP_CALLBACK_ % (BASE_PACKAGE_NAME, group.lower(), func_name)
             funcs_str += _FUNC_STR_ % (desc,
                                        getWithFirstLower(func_name), func_name, func_name,
                                        func_name, getWithFirstLower(func_name),
                                        func_name, getWithFirstLower(func_name),
-                                       func_name,
-                                       getWithFirstLower(func_name), func_name, getWithFirstLower(func_name), func_name,
-                                       func_name)
+                                       getWithFirstUpper(group),
+                                       getWithFirstLower(func_name), param_str, func_name, func_name)
         class_str = _CLASS_STR_ % (getWithFirstUpper(group), getWithFirstUpper(group), funcs_str)
 
         file_content = _PACKAGE_ + _IMP_BASE_ + imp_contr + imp_config + imp_callback + FILE_HEADER_ % desc + class_str
@@ -114,5 +119,3 @@ def createControllerFile(file_name):
         os.mkdir(CONTROLLER_PATH)
     with open(contr_file, "w+", encoding="utf-8") as file:
         file.write(contr_content)
-
-

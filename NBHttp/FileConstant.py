@@ -9,7 +9,7 @@ GROUP_PATH = ROOT_PATH + "group"
 CONTROLLER_INTER = CONTROLLER_PATH + "/inter"
 
 INTER_FOLDER_NAME = "inter"
-BASE_PACKAGE_NAME = "com.nb.base.nbhttp"
+BASE_PACKAGE_NAME = "com.icoinbay.app.nbhttp"
 
 FILE_HEADER_ = """
 /**
@@ -26,7 +26,7 @@ def getFuncName(path=""):
     ps = path.split("/")
     func_name = ""
     l_p = len(ps)
-    if l_p > 1:
+    if l_p > 2:
         for index, p in enumerate(ps[l_p - 2:l_p]):
             temp = ""
             if "-" in p:
@@ -36,7 +36,9 @@ def getFuncName(path=""):
                 temp = p
             func_name += temp[0].upper() + temp[1:]
     else:
-        func_name = ps
+        for _p_ in ps:
+            func_name += _p_
+        func_name = func_name.replace("-", "")
     return func_name[0].upper() + func_name[1:]
 
 

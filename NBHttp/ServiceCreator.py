@@ -3,7 +3,7 @@
 import os
 from NBHttp.FileConstant import *
 
-_PACKAGE_ = "package %s.nbhttp.service \n" % BASE_PACKAGE_NAME
+_PACKAGE_ = "package %s.service \n" % BASE_PACKAGE_NAME
 
 _IMPORT_ = """
 import com.nb.nbhttp.param.NBaseResponse
@@ -26,7 +26,7 @@ _FUNC_STR_ = """\n
     /**
      %s
      * */
-    @%s("/%s")
+    @%s("%s")
     fun %s(%s): Observable<NBaseResponse<%s>>
     \n
 """
@@ -40,6 +40,7 @@ def buildServiceContent(fileName):
     :return: service file name with the entire path, the  content of the service.
     """
     with open(fileName, "r", encoding="utf-8") as file:
+        print("service:" + fileName)
         content = file.read()
         inter_json = eval(content)
         group = str(inter_json["group"])
@@ -64,13 +65,14 @@ def buildServiceContent(fileName):
                 params_in_func += "@Query(\"%s\") %s:%s" % (params[0][0], params[0][0], params[0][1])
                 for param in params[1:]:
                     params_commit += "*@param %s %s \n     " % (param[0], param[2])
-                params_in_func += ",     \n@Query(\"%s\") %s:%s" % (param[0], param[0], param[1])
+                    params_in_func += ",     \n@Query(\"%s\") %s:%s" % (param[0], param[0], param[1])
             if func["hasJsonBody"]:
                 body_str = "%sBody" % func_name
                 import_str += "import %s.group.%s.body.%s\n" % (BASE_PACKAGE_NAME, group.lower(), body_str)
             if is_list is True:
                 body_str = "MutableList<%s>" % body_str
-            funcs_str += _FUNC_STR_ % (params_commit, method, path, func_name, params_in_func, body_str)
+            funcs_str += _FUNC_STR_ % (
+                params_commit, method, path, getWithFirstLower(func_name), params_in_func, body_str)
         _SERVICE_FIlE = _PACKAGE_ + _IMPORT_ % import_str + FILE_HEADER_ % desc_group + _SERVICE_CLASS_ % (
             group, funcs_str)
         return _SERVICE_FILE_NAME_ % group, _SERVICE_FIlE

@@ -13,7 +13,7 @@ from NBHttp.ParamCreator import *
 from NBHttp.ServiceCreator import *
 
 json_path = "./json_config"
-
+SZZC_51 = "./51SZZC"
 
 def getFilePaths(file_dir):
     """
@@ -65,4 +65,4 @@ def createWithJson(file_dir):
         createWithOneJson(file)
 
 
-createWithJson(json_path)
+createWithJson(SZZC_51)

@@ -48,7 +48,7 @@ def buildCallbackStr(file_name):
             if isList:
                 body_str = "MutableList<%s>" % body_str
             class_str = _CLASS_STR_ % (
-                func_name, getWithFirstLower(func_name), func_name, body_str, func_name,
+                func_name, func_name, func_name, body_str, func_name,
                 getWithFirstLower(func_name),
                 body_str,
                 func_name, func_name)

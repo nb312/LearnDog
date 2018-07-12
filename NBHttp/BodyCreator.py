@@ -52,5 +52,3 @@ def createBodyFile(file_name):
         if os.path.exists(body_name) is False:
             with open(body_name, "w+", encoding="utf-8") as file:
                 file.write(body_contents[i])
-
-
