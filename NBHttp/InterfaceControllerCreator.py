@@ -23,7 +23,7 @@ _FUNC_STR = """
 _CONTROLLER_FILE_PATH_ = CONTROLLER_PATH + "/inter"
 
 
-def buildControllerStr(file_name):
+def __buildControllerStr(file_name):
     with open(file_name, "r", encoding="utf-8") as file:
         content = file.read()
         inter_json = eval(content)
@@ -42,7 +42,7 @@ def buildControllerStr(file_name):
 
 
 def createControllerInterfaceFile(file_name):
-    controller_path, controller_file, file_content = buildControllerStr(file_name)
+    controller_path, controller_file, file_content = __buildControllerStr(file_name)
     if os.path.exists(controller_path) is False:
         os.mkdir(controller_path)
     with open(controller_file, "w+", encoding="utf-8") as file:

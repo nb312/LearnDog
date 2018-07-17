@@ -17,7 +17,7 @@ class %s {
 _PATH_FILE_ = "%s/%s/body"  # 1: GROUP_PATH 2: some group name.
 
 
-def buildBodyStr(file_name):
+def __buildBodyStr(file_name):
     """
     :param fileName: this is the file name of http config json that write by users.
     :return:  group path, body path , all paths of body files,all contents of body files.
@@ -42,7 +42,7 @@ def buildBodyStr(file_name):
 
 
 def createBodyFile(file_name):
-    group_path, body_path, body_files, body_contents = buildBodyStr(file_name)
+    group_path, body_path, body_files, body_contents = __buildBodyStr(file_name)
     if os.path.exists(group_path) is False:
         os.mkdir(group_path)
     if os.path.exists(body_path) is False:

@@ -1,6 +1,7 @@
 #!python/bin
 
 import os
+import json
 
 from NBHttp.FileConstant import *
 from NBHttp.BaseFileCreator import *
@@ -12,8 +13,13 @@ from NBHttp.InterfaceControllerCreator import *
 from NBHttp.ParamCreator import *
 from NBHttp.ServiceCreator import *
 
+from NBHttp.ServiceCreator_FileUpload import *
+from NBHttp.ControllerCreator_FileUpload import *
+from NBHttp.ParamCreator_FileUpload import *
+
 json_path = "./json_config"
 SZZC_51 = "./51SZZC"
+
 
 def getFilePaths(file_dir):
     """
@@ -48,13 +54,21 @@ def createDefaultFolder():
 def createWithOneJson(file_name):
     createDefaultFolder()
     createBaseFile()
-    create_service_file(file_name)
+    with open(file_name, "r", encoding="utf-8") as file:
+        print("service:" + file_name)
+        content = file.read()
+        inter_json = eval(content)
+        if "file" in inter_json:
+            createParamFilePostFile(file_name)
+            createControllerFilePostFile(file_name)
+            create_service_file_post_file(file_name)
+        else:
+            create_service_file(file_name)
+            createControllerFile(file_name)
+            createParamFile(file_name)
 
     createControllerInterfaceFile(file_name)
-    createControllerFile(file_name)
-
     createBodyFile(file_name)
-    createParamFile(file_name)
     createCallbackFile(file_name)
     creatConfigFile(file_name)
 

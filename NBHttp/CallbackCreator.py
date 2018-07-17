@@ -42,7 +42,7 @@ _CALLBACK_FILE_ = GROUP_PATH + "/%s/callback/%sCallback.kt"
 _CALL_BACK_PATH = GROUP_PATH + "/%s/callback"
 
 
-def buildCallbackStr(file_name):
+def __buildCallbackStr(file_name):
     """
     :param file_name: this is a config file with user.
     :return: group path, callback path, callback files,callback contents.
@@ -85,7 +85,7 @@ def buildCallbackStr(file_name):
 
 
 def createCallbackFile(file_name):
-    group_path, callback_path, callback_files, callback_contents = buildCallbackStr(file_name)
+    group_path, callback_path, callback_files, callback_contents = __buildCallbackStr(file_name)
     assert len(callback_files) == len(callback_contents)
     if os.path.exists(group_path) is False:
         os.mkdir(group_path)

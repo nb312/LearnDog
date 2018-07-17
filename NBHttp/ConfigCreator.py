@@ -17,7 +17,7 @@ interface I%sConfig {
 _CONFIG_FILE_ = GROUP_PATH + "/%s/I%sConfig.kt"
 
 
-def buildConfigStr(file_name):
+def __buildConfigStr(file_name):
     """
     :param file_name: this file is created by user.
     :return: group path , config files ,config contents that pair to files
@@ -56,7 +56,7 @@ def buildConfigStr(file_name):
 
 
 def creatConfigFile(file_name):
-    group_path, config_files, config_contents = buildConfigStr(file_name)
+    group_path, config_files, config_contents = __buildConfigStr(file_name)
     assert len(config_files) == len(config_contents)
     if os.path.exists(group_path) is False:
         os.mkdir(group_path)
