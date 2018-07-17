@@ -37,8 +37,8 @@ _FUNC_STR_ = """\n
     \n
 """
 _PARAM_STR_ = """
-    @PartMap params: MutableMap<String, RequestBody>,
-    @Part parts: MutableList<MultipartBody.Part>
+    @PartMap params: MutableMap<String, RequestBody>?,
+    @Part parts: MutableList<MultipartBody.Part>?
 """
 
 _SERVICE_FILE_NAME_ = SERVICE_PATH + "/I%sService.kt"
