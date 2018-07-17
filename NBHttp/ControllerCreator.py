@@ -64,7 +64,7 @@ _FUNC_STR_ = """
         }
         var serviceCreator = BaseServiceCreator(i%sConfig.%sParam)
         var service = serviceCreator.createService(I%sService::class.java)
-        var disposable = serviceCreator.onSubscribe(service.%s(%s), %sConfigCallBack(i%sConfig))
+        var disposable = serviceCreator.onSubscribe(service.%s(%s), %sConfigCallBack(this,i%sConfig))
         addDisposable(disposable)
         return disposable
     }
