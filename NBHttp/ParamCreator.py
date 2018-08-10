@@ -45,10 +45,10 @@ def __buildParamStr(file_name):
 
             if p_len > 0:
                 data_str = "data"
-                params_str += "var %s:%s %s" % (params[0][0], params[0][1], __createDefaultValue___(params[0][1]))
+                params_str += "var %s:%s? %s" % (params[0][0], params[0][1], __createDefaultValue___(params[0][1]))
                 param_commit_str += "*@param %s %s" % (params[0][0], params[0][2])
                 for p in params[1:]:
-                    params_str += ",\n    var %s:%s %s" % (p[0], p[1], __createDefaultValue___(p[1]))
+                    params_str += ",\n    var %s:%s? %s" % (p[0], p[1], __createDefaultValue___(p[1]))
                     param_commit_str += "\n *@param %s %s" % (p[0], p[2])
             commit_str = _PARAM_COMMIT_STR % param_commit_str
 
@@ -66,17 +66,17 @@ def __buildParamStr(file_name):
 def __createDefaultValue___(type=""):
     re_str = ""
     if type == "Long":
-        re_str = "= 0L"
+        re_str = "= null"
     elif type == "String":
-        re_str = "= \"\""
+        re_str = "= null"
     elif type == "Int":
-        re_str = "= 0"
+        re_str = "= null"
     elif type == "Boolen":
-        re_str = "= false"
+        re_str = "= null"
     elif type == "Double":
-        re_str = "= 0.0"
+        re_str = "= null"
     else:
-        re_str = ""
+        re_str = "= null"
     return re_str
 
 

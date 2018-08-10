@@ -84,9 +84,9 @@ _PARAM_STR = """
                 .build()
         %s
 """
-_ADD_PARAM_STR = "\n.addTextParam(%sParam.%s,param.%s)"
+_ADD_PARAM_STR = "\n.addTextParam(%sParam.%s,param?.%s)"
 _PART_STR_ = """
- var parts = files2Parts(param.%s
+ var parts = files2Parts(param?.%s
                 , i%sConfig.%sParam?._progressListener_)
 """
 

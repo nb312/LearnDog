@@ -95,9 +95,9 @@ def __buildControllerStr(file_name):
 
             param_str = ""
             if len(func["params"]) > 0:
-                param_str += "\ni%sConfig.%sParam.%s" % (func_name, getWithFirstLower(func_name), func["params"][0][0])
+                param_str += "\ni%sConfig.%sParam?.%s" % (func_name, getWithFirstLower(func_name), func["params"][0][0])
             for param in func["params"][1:]:
-                param_str += ",\ni%sConfig.%sParam.%s" % (func_name, getWithFirstLower(func_name), param[0])
+                param_str += ",\ni%sConfig.%sParam?.%s" % (func_name, getWithFirstLower(func_name), param[0])
             imp_config += _IMP_CONFIG_ % (BASE_PACKAGE_NAME, group.lower(), func_name)
             imp_callback += _IMP_CALLBACK_ % (BASE_PACKAGE_NAME, group.lower(), func_name)
             funcs_str += _FUNC_STR_ % (desc,
